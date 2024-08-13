@@ -1,0 +1,26 @@
+version: '1.0'
+
+services:
+  web:
+    image: blog:latest
+    build:
+      context: ./Blog
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    build:
+      context: ./Postgres
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

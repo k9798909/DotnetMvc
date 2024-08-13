@@ -1,0 +1,9 @@
+@model System.Collections.Generic.List<CategoryVM>
+<div class="nav-scroller py-1 mb-3 border-bottom px-5">
+    <nav class="nav nav-underline justify-content-between">
+        @foreach (var category in Model)
+        {
+            <a class="nav-item nav-link link-body-emphasis active" asp-controller="Article" asp-action="Index" asp-route-categoryId="@category.Id">@category.Name</a>
+        }
+    </nav>
+</div>

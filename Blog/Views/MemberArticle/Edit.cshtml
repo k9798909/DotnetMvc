@@ -1,0 +1,81 @@
+﻿@model ArticleEditVM
+@{
+    ViewData["Title"] = Model.Id == 0 ? "新增文章" : "修改文章";
+}
+<form asp-controller="MemberArticle" asp-action="EditPost" method="post">
+    <input asp-for="Id" type="hidden">
+    <div class="container mt-3">
+        <div class="row justify-content-center mb-3">
+            <div class="col-8">
+                @if (Model.Id == 0)
+                {
+                    <h2>新增文章</h2>
+                }
+                else
+                {
+                    <h2>修改文章</h2>
+                }
+
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-8">
+                <label for="title" class="form-label">文章標題</label>
+                <input asp-for="Title" type="text" class="form-control" id="title">
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-8">
+                <label class="form-label">文章類別</label>
+                <select id="categoriesSelect" asp-for="CategoryId" class="form-select">
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-8">
+                <label for="content" class="form-label">文章內容</label>
+                <textarea asp-for="Content" class="form-control" id="content" rows="10"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-4">
+                <button type="submit" class="btn btn-outline-success w-100">確定</button>
+            </div>
+            <div class="col-4">
+                <a class="btn btn-outline-danger w-100" asp-controller="MemberArticle" asp-action="Index">取消</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        fetchCategoriesOptions();
+
+
+
+        function fetchCategoriesOptions() {
+            $.ajax({
+                url: '@Url.Action("Categories")',
+                type: "GET",
+                success: function (res) {
+                    $("#categoriesSelect").empty();
+                    $("#categoriesSelect").append(`<option value="">請選擇</option>`);
+                    res.forEach(item => {
+                        $("#categoriesSelect").append(`<option value="${item.id}">${item.name}</option>`);
+                    })
+                    $("#categoriesSelect").val("@Model.CategoryId");
+                },
+                error: function (err) {
+                    console.error(err);
+                }
+            });
+        };
+    </script>
+}

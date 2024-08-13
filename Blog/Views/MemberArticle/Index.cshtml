@@ -1,0 +1,85 @@
+﻿@model IEnumerable<MemberArticleVM>
+@{
+    ViewData["Title"] = "文章列表";
+}
+
+<div class="d-flex flex-row-reverse">
+    <a class="btn btn-sm btn-outline-secondary" asp-controller="MemberArticle" asp-action="Add">新增</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col" width="10%">#</th>
+            <th scope="col" width="50%">標題</th>
+            <th scope="col" width="20%">日期</th>
+            <th scope="col" width="20%">動作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1; // 初始化索引
+        }
+        @foreach (var dt in Model)
+        {
+            <tr>
+                <th scope="row">@index</th>
+                <td>@dt.Title</td>
+                <td>@dt.CreatedTime</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-secondary me-2" asp-controller="MemberArticle" asp-action="Edit"
+                        asp-route-id="@dt.Id">修改</a>
+                    <button class="delete-btn btn btn-sm btn-outline-danger" value="@dt.Id">刪除</button>
+                </td>
+            </tr>
+            index++;
+        }
+    </tbody>
+</table>
+
+
+<div id="modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">確認是否刪除文章</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>若刪除文章將無法復原，請確認是否刪除?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">關閉</button>
+                <form id="deleteForm" asp-controller="MemberArticle" asp-action="UpdateForDelete">
+                    <input id="deleteId" name="DeleteId" type="hidden" value="">
+                    <button type="button" class="btn btn-danger confirm-btn">確認</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('#modal .btn-close').click(function () {
+            $('#modal').hide();
+        })
+
+        $('#modal .close-btn').click(function () {
+            $('#modal').hide();
+        })
+
+        let deleteId = null;
+        $('.delete-btn').click(function () {
+            deleteId = $(this).val();
+            $('#modal').show();
+        })
+
+        $('#modal .confirm-btn').click(function () {
+            $('#modal').hide();
+            $("#deleteId").val(deleteId)
+            $("#deleteForm").submit();
+        })
+
+    </script>
+}

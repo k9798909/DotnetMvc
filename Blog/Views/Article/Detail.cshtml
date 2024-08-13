@@ -1,0 +1,21 @@
+﻿@model ArticleVM
+
+@{
+    ViewData["Title"] = "文章";
+}
+
+<div class="container border rounded" style="min-height: 75vh;">
+    <div class="row">
+        <div class="col-12 p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary-emphasis">@Model.CategoryName</strong>
+            <h1 class="text-center">@Model.Title</h1>
+            <div class="text-body-secondary text-end">@Model.AuthorName</div>
+            <div class="text-body-secondary text-end">@Model.CreatedTime</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 px-5">
+            <pre class="card-text py-3 fs-3" style="white-space:pre-wrap;">@Model.Content</pre>
+        </div>
+    </div>
+</div>
